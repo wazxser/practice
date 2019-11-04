@@ -22,6 +22,14 @@ for i, arr in enumerate(train):
     train[i] = np.array(arr)
 test = np.array([[3, 4.5, 0]])
 
+# iris = load_iris()
+# df = pd.DataFrame(iris.data, columns=iris.feature_names)
+# df['label'] = iris.target
+# df.columns = ['sepal length', 'sepal width', 'petal length', 'petal width', 'label']
+#
+# 
+# data = np.array(df.iloc[:100, [0, 1, -1]])
+# train, test = train_test_split(data, test_size=0.4)
 
 class Node:
     def __init__(self, data, depth = 0, lchild = None, rchild = None):
@@ -76,12 +84,12 @@ class KdTree:
                         self.nearest = self.nearest[:-1]
                         break
 
-                n = list(self.nearest[:, 0]).count(-1)
-                if self.nearest[-n-1, 0] > abs(daxis):
-                    if daxis < 0:
-                        recurve(node.rchild)
-                    else:
-                        recurve(node.lchild)
+                # n = list(self.nearest[:, 0]).count(-1)
+                # if self.nearest[-n-1, 0] > abs(daxis):
+                if daxis < 0:
+                    recurve(node.rchild)
+                else:
+                    recurve(node.lchild)
         recurve(self.KdTree)
 
         knn = self.nearest[: 1]
@@ -98,8 +106,7 @@ kdt.build(train)
 
 score = 0
 for x in test:
-    print(x)
-    near, belong = kdt.search(x[:-1], 1)
+    near, belong = kdt.search(x[:-1], 5)
     if belong == x[-1]:
         score += 1
     print('test: ')
